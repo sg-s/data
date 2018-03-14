@@ -9,7 +9,7 @@
 % and you will use logical indexing to pull out
 % chunks of data
 
-classdef data < dynamicprops
+classdef Data < dynamicprops
 
 
 	properties
@@ -25,7 +25,7 @@ classdef data < dynamicprops
 	methods
 		% constructor function -- makes a data object
 		% from a bunch of compatibly sized matrices and vectors
-		function self = data(varargin)
+		function self = Data(varargin)
 			self.input_names = {};
 			for i = length(varargin):-1:1
 				self.input_names{i} = inputname(i);
