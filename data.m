@@ -13,6 +13,7 @@ classdef data < dynamicprops
 
 
 	properties
+		size
 	end
 
 	properties (Access =  private)
@@ -58,14 +59,14 @@ classdef data < dynamicprops
 				sz(:,i) = this_sz;
 			end
 
-			data_size = mode(sz);
+			self.size = mode(sz(:));
 			assert(min(sum(sz == mode(sz(:)))) == 1,'Data sizes inconsistent')
 			for i = 1:length(varargin)
 				self.addprop(input_names{i});
 				if isvector(varargin{i})
 					self.(input_names{i}) = varargin{i}(:);
 				else
-					if size(varargin{i},2) ~= data_size
+					if size(varargin{i},2) ~= self.size
 						varargin{i} = varargin{i}';
 					end
 					self.(input_names{i}) = varargin{i};
