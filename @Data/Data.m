@@ -32,22 +32,26 @@ classdef Data < dynamicprops
 			end
 
 			if nargin == 1 & isstruct(varargin{1})
-				disp('Converting matlab struct to Data structure')
-
 				S = varargin{1};
 
 				if length(S) == 1
-					disp('Scalar structure...')
 					fn = fieldnames(S);
-					sz = size(S.(fn{1}));
-					for i = 2:length(fn)
-						assert(all(size(S.(fn{i})) == sz),'Mismatched fields, cannot be made into a data structure');
+					sz = NaN(length(fn),2);
+					for i = 1:length(fn)
+						sz(i,:) = size(S.(fn{i}));
 					end
+					data_size =  mode(sz(:));
 					for i = 1:length(fn)
 						prop_handle = self.addprop(fn{i});
 						prop_handle.SetAccess = 'protected';
 						self.prop_names = vertcat(self.prop_names, fn{i});
-						self.(fn{i}) = S.(fn{i});
+						if size(S.(fn{i}),1) == data_size
+							self.(fn{i}) = S.(fn{i});
+						elseif size(S.(fn{i}),2) == data_size
+							self.(fn{i}) = S.(fn{i})';
+						else
+							error('Mismatched sizes')
+						end
 					end
 
 				else
@@ -61,7 +65,6 @@ classdef Data < dynamicprops
 
 
 			elseif nargin == 1 & exist(varargin{1},'file') == 2
-				disp('Converting file to Data structure')
 				matfile_handle = matfile(varargin{1});
 				vars = whos(matfile_handle);
 				sz = vertcat(vars.size);
@@ -91,60 +94,14 @@ classdef Data < dynamicprops
 
 			else
 
-				self.input_names = {};
-				for i = length(varargin):-1:1
-					self.input_names{i} = inputname(i);
-				end
-				self = self.add(varargin{:});
-				self.input_names = {};
+				disp('not coded')
+				keyboard
 			end
 
 			
 		end % end constructor
 
 
-		function self = add(self, varargin)
-
-			% determine the input names
-			if isempty(self.input_names)
-				for i = length(varargin):-1:1
-					input_names{i} = inputname(i+1);
-				end
-
-			else
-				input_names = self.input_names;
-			end
-
-			% check that all varargins have the same size
-			for i = 1:length(varargin)
-				this_sz = size(varargin{i});
-				if length(this_sz) > 2
-					error('Only 1D and 2D matrices are supported')
-				end
-
-				sz(:,i) = this_sz;
-			end
-
-			self.size = mode(sz(:));
-			assert(min(sum(sz == mode(sz(:)))) == 1,'Data sizes inconsistent')
-			for i = 1:length(varargin)
-				self.addprop(input_names{i});
-				if isvector(varargin{i})
-					self.(input_names{i}) = varargin{i}(:);
-				else
-					if size(varargin{i},2) ~= self.size
-						varargin{i} = transpose(varargin{i});
-					end
-					self.(input_names{i}) = varargin{i};
-				end
-			end
-			self.input_names = {};
-
-			% overwrite the variable in the calling workspace
-			if nargout == 0
-				assignin('caller',inputname(1),self)
-			end
-		end % end add
 
 	end % end methods
 
