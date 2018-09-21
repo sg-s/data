@@ -19,7 +19,11 @@ for i = 1:length(all_files)
 	self + d;
 end
 
-% save this
+% save this -- only if there are multiple files
+if length(all_files) == 1
+	return
+end
+
 self.save;
 
 % delete all old files
