@@ -22,6 +22,11 @@ classdef Data < dynamicprops
 	end
 
 
+	methods (Static)
+		convertFiles2DataFormat;
+
+	end
+
 
 	methods
 		% constructor function -- makes a data object
@@ -67,6 +72,14 @@ classdef Data < dynamicprops
 			elseif nargin == 1 & exist(varargin{1},'file') == 2
 				matfile_handle = matfile(varargin{1});
 				vars = whos(matfile_handle);
+
+				% check if this was a dump from Data.save()
+				if any(strcmp({vars.name},'DATA_SIZE'))
+					% it is, use Data.load()
+					self.load(varargin{1})
+					return
+				end
+
 				sz = vertcat(vars.size);
 				sz = mode(sz(:,1));
 				% check that all variables are the same size
