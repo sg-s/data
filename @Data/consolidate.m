@@ -3,6 +3,10 @@ function consolidate(self)
 
 all_files = dir('*.data');
 
+if length(all_files) == 0
+	return
+end
+
 % read the sizes of all files
 total_size = 0;
 for i = 1:length(all_files)
