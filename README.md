@@ -33,29 +33,36 @@ In addition, `data`, comes with a number of helpful methods to make working with
 
 # Usage
 
-Create a new `data` object:
+### Create a new `Data` object from a structure:
 
-```matlab
-A = randn(1e4,1e3);
-B = randn(1e5,1e3);
-idx = 1:1e3;
-
-d = data(A,B,idx);
+```
+% S is a structure
+d = Data(S);
 ```
 
-Add a new array to your dataset:
+### Save to disk:
 
-```matlab
-C = randn(4,1e3);
-d.add('C')
+```
+d.save
 ```
 
-If you try to do something stupid, `data` will throw an error
+### Append a new Data structure to an old one 
 
-```matlab
-X = randn(1e2,2e3);
-d.add(X) % this won't work because the dimensions of X are wrong
 ```
+d + d_new
+```
+
+Note that this overloaded operation is not commutative: what this does is to take the contents of `d_new` and append it to `d`. So `d` will be changed, but `d_new` will not be. 
+
+
+### Combine a whole bunch of `Data` files into one
+
+```
+d.consolidate()
+```
+
+Often, you end up with your data split up into mulitple files when they should be in one file (this is true for both experiments and simualations). This handy `consolidate` method combines them all into one file and deletes the fragmented pieces. 
+
 
 # License
 
