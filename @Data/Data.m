@@ -106,9 +106,8 @@ classdef Data < dynamicprops
 				return
 
 			else
-
-				disp('not coded')
-				keyboard
+				% attempt to use add() to make a data structure
+				self.add(varargin{:})
 			end
 
 			
