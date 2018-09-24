@@ -33,11 +33,17 @@ In addition, `data`, comes with a number of helpful methods to make working with
 
 # Usage
 
-### Create a new `Data` object from a structure:
+### Create a new `Data` object
 
 ```
 % S is a structure
 d = Data(S);
+```
+
+You can also create a new `Data` object with some variables and specify their dimensions:
+
+```
+d = Data('X',8,'Y',8);
 ```
 
 ### Save to disk:
@@ -54,6 +60,13 @@ d + d_new
 
 Note that this overloaded operation is not commutative: what this does is to take the contents of `d_new` and append it to `d`. So `d` will be changed, but `d_new` will not be. 
 
+Note that you don't have to assign this to a variable:
+
+```
+d = d + d_new % no needed, same as
+d + d_new     % this line 
+```
+
 
 ### Combine a whole bunch of `Data` files into one
 
@@ -62,6 +75,15 @@ d.consolidate()
 ```
 
 Often, you end up with your data split up into mulitple files when they should be in one file (this is true for both experiments and simualations). This handy `consolidate` method combines them all into one file and deletes the fragmented pieces. 
+
+
+### Filter data based on a logical operator 
+
+If you have a large amount of data in your `Data` object, you can create a new `Data` object based on some logical filter:
+
+```
+d2 = d.filter(d.X>0);
+```
 
 
 # License
