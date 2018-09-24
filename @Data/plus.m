@@ -12,6 +12,22 @@ if isstruct(new_data)
 		sz(i,:) = size(new_data.(new_prop_names{i}));
 	end
 	new_data_size = mode(sz(:));
+
+
+	% make sure all data sizes match
+	for i = 1:length(self.prop_names)
+		this_sz = size(self.(self.prop_names{i}),2);
+		if size(new_data.(self.prop_names{i}),2) == this_sz
+			% all ok
+		elseif size(new_data.(self.prop_names{i}),2) ~= this_sz & size(new_data.(self.prop_names{i}),1) == this_sz
+			% rotate
+			new_data.(self.prop_names{i}) = transpose(new_data.(self.prop_names{i}));
+		else
+			error('Mismatched sizes, cannot proceed')
+
+		end
+	end
+
 elseif  isa(new_data,'Data')
 	new_prop_names = new_data.prop_names;
 	new_data_size = new_data.size;
