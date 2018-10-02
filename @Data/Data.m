@@ -64,7 +64,7 @@ classdef Data < dynamicprops
 					keyboard
 				end
 
-				self.size = max(sz);
+				self.size = data_size;
 
 				return
 
