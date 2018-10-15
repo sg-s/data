@@ -40,6 +40,10 @@ assert(length(self.prop_names) == length(new_prop_names),'Data structures incong
 
 prop_names = self.prop_names;
 
+if length(prop_names) == 0
+	return
+end
+
 for i = 1:length(prop_names)
 	assert(any(strcmp(new_prop_names,prop_names{i})),'Data structures are incongruent')
 end
