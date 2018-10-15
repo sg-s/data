@@ -10,4 +10,9 @@ for i = 1:length(self.prop_names)
 	filtered_data.(prop_names{i}) = self.(prop_names{i})(logical_filter,:);
 end
 
-filtered_data.size = sum(logical_filter);
+if islogical(logical_filter) & length(logical_filter) == self.size
+
+	filtered_data.size = sum(logical_filter);
+else
+	filtered_data.size = length(logical_filter);
+end
