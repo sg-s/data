@@ -1,6 +1,9 @@
 % plus new data to existing data
 % usage
-% d.plus(new_data)
+% 
+% old_data + new_data
+% 
+
 
 function self = plus(self, new_data)
 

@@ -1,5 +1,5 @@
 % add()
-% add variable to empty Data structure
+% add variable to Data structure
 % 
 function add(self, varargin)
 
