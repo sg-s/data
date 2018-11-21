@@ -33,6 +33,13 @@ classdef Data < dynamicprops
 		% from a bunch of compatibly sized matrices and vectors
 		function self = Data(varargin)
 			if nargin == 0
+				% check if there is a *.data file 
+				% in the current directory, and load them
+				allfiles = dir('*.data');
+				if length(allfiles) == 1
+					self.load(allfiles(1).name)
+				end
+
 				return
 			end
 
@@ -94,7 +101,7 @@ classdef Data < dynamicprops
 					prop_handle.SetAccess = 'protected';
 					self.prop_names = vertcat(self.prop_names, vars(i).name);
 
-					if vars(i).size(2) == 2
+					if vars(i).size(2) == 1
 						temp = matfile_handle.(vars(i).name);
 						self.(vars(i).name) = temp';
 					else
@@ -105,6 +112,21 @@ classdef Data < dynamicprops
 				self.size = sz;
 				return
 
+			elseif nargin == 1 & isa(varargin{1},'char') && ~isempty(strfind(varargin{1},'*'))
+				% we've been given a pattern to match, load all these files one by one
+				allfiles = dir(varargin{1});
+
+				self = Data(allfiles(1).name);
+				self.prealloc(length(allfiles)-1);
+
+				for i = 2:length(allfiles)
+					textbar(i,length(allfiles))
+					temp = load(allfiles(i).name);
+					for j = 1:length(self.prop_names)
+						self.(self.prop_names{j})(i,:) = temp.(self.prop_names{j});
+					end
+				end
+				self.size = length(allfiles);
 			else
 				% attempt to use add() to make a data structure
 				self.add(varargin{:})
