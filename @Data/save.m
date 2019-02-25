@@ -5,9 +5,9 @@ if nargin == 1
 	% hash of the data in here
 
 	for i = length(self.prop_names):-1:1
-		H{i} = GetMD5(self.(self.prop_names{i}));
+		H{i} = mtools.crypto.md5hash(self.(self.prop_names{i}));
 	end
-	save_name = [GetMD5(vertcat(H{:})) '.data'];
+	save_name = [mtools.crypto.md5hash(vertcat(H{:})) '.data'];
 
 end
 

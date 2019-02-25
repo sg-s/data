@@ -6,7 +6,7 @@
 function prealloc(self, N)
 
 assert(isscalar(N),'N should be a scalar')
-assert(isint(N),'N should be a integer')
+assert(mtools.maths.isint(N),'N should be a integer')
 assert(N>1,'N should be > 1')
 
 prop_names = self.prop_names;

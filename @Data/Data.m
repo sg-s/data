@@ -87,14 +87,11 @@ classdef Data < dynamicprops
 					return
 				end
 
-				sz = vertcat(vars.size);
-				sz = mode(sz(:,1));
-				% check that all variables are the same size
+				% check that all variables are 2D 
 				for i = 1:length(vars)
-					assert(length(vars(i).size)<3,'3+ dimension matrix exists in this file, cannot be made into a Data structure')
-					assert(vars(i).size(1) == sz || vars(i).size(2) == sz ,'[FATAL] Mismatched array sizes')
-
+					assert(length(vars(i).size)<3,'Cannot include high dimensional matrix into data structure')
 				end
+
 
 				for i = 1:length(vars)
 					prop_handle = self.addprop(vars(i).name);
@@ -109,7 +106,7 @@ classdef Data < dynamicprops
 					end
 				end
 
-				self.size = sz;
+				self.size = size(self.(vars(1).name),1);
 				return
 
 			elseif nargin == 1 & isa(varargin{1},'char') && ~isempty(strfind(varargin{1},'*'))
@@ -127,6 +124,8 @@ classdef Data < dynamicprops
 					end
 				end
 				self.size = length(allfiles);
+			elseif nargin == 1 && strcmp(varargin{1},'--empty')
+				% do nothing
 			else
 				% attempt to use add() to make a data structure
 				self.add(varargin{:})

@@ -5,7 +5,7 @@
 function new_self = new(self)
 
 
-new_self = Data();
+new_self = Data('--empty');
 
 for i = 1:length(self.prop_names)
 
