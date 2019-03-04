@@ -8,7 +8,7 @@ function convertFiles2DataFormat()
 all_files = dir(pwd);
 
 for i = 1:length(all_files)
-	textbar(i,length(all_files))
+	corelib.textbar(i,length(all_files))
 	if strcmp(all_files(i).name(1),'.')
 		continue
 	end

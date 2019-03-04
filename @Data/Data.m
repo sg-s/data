@@ -117,7 +117,7 @@ classdef Data < dynamicprops
 				self.prealloc(length(allfiles)-1);
 
 				for i = 2:length(allfiles)
-					textbar(i,length(allfiles))
+					corelib.textbar(i,length(allfiles))
 					temp = load(allfiles(i).name);
 					for j = 1:length(self.prop_names)
 						self.(self.prop_names{j})(i,:) = temp.(self.prop_names{j});

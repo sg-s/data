@@ -21,7 +21,7 @@ self.prealloc(total_size)
 
 
 for i = 1:length(all_files)
-	textbar(i,length(all_files))
+	corelib.textbar(i,length(all_files))
 	d = Data([all_files(i).folder filesep all_files(i).name]);
 	self + d;
 end
