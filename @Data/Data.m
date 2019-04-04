@@ -43,6 +43,9 @@ classdef Data < dynamicprops
 				return
 			end
 
+
+
+
 			if nargin == 1 & isstruct(varargin{1})
 				S = varargin{1};
 
@@ -72,6 +75,26 @@ classdef Data < dynamicprops
 				end
 
 				self.size = data_size;
+
+				return
+
+			elseif nargin == 1 & exist(varargin{1},'dir') == 7
+
+
+				% it's a folder, so run it on all files in it
+				look_here = varargin{1};
+				all_files = dir([look_here filesep '*.data']);
+				if length(all_files) == 0
+					return
+				end
+
+				self = Data([all_files(1).folder filesep all_files(1).name]);
+
+				if length(all_files) == 1
+					return
+				end
+
+				self.consolidate(varargin{1});
 
 				return
 
