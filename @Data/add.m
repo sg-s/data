@@ -12,9 +12,9 @@ for ii = 1:2:length(varargin)-1
 
 	% check that this doesn't alreay exist 
 	assert(~any(strcmp(self.prop_names,var_name)),'Variable name already exists')
-	assert(isscalar(var_size),'Varible size must be a scalar')
-	assert((var_size>0),'Varible size must be positive')
-	assert(mathlib.isint(var_size),'Varible size must be a integer')
+	assert(isscalar(var_size),'Variable size must be a scalar')
+	assert((var_size>0),'Variable size must be positive')
+	assert(mathlib.isint(var_size),'Variable size must be a integer')
 
 	self.prop_names = vertcat(self.prop_names,var_name);
 	prop_handle = self.addprop(var_name);
