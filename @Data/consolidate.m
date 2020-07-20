@@ -1,10 +1,11 @@
 function self = consolidate(self, look_here)
 
+
 if nargin == 1
 	look_here = pwd;
 end
 
-all_files = dir(pathlib.join(look_here, '*.data'));
+all_files = dir(fullfile(look_here, '*.data'));
 
 if length(all_files) == 0
 	return
@@ -29,11 +30,10 @@ end
 var_names1 = whos('-file',[all_files(1).folder filesep all_files(1).name]);
 var_names1(strcmp({var_names1.name},'DATA_SIZE')) = [];
 
-inputs = cell(length(var_names1)*2,1);
-inputs(1:2:end) = {var_names1.name};
-inputs(2:2:end) = {var_names1.size(:,2)};
-
-self = Data(inputs{:});
+self = Data;
+for i = 1:length(var_names1)
+	self.add(var_names1(i).name,var_names1(i).size(:,2));
+end
 
 
 self.prealloc(total_size)
